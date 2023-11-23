@@ -5,7 +5,7 @@ on:
 jobs:
  build-deploy:
   runs-on: ubuntu-latest
-   steps:
+  steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
     - uses: aws-actions/setup-sam@v1

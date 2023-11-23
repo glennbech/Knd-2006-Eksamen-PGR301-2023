@@ -62,4 +62,4 @@ jobs:
         run: exit 1
         
       - name: Terraform Apply
-        run: terraform apply -var="image=$IMAGE" -auto-approve
+        run: terraform apply -var="image_identifier=$IMAGE" -auto-approve

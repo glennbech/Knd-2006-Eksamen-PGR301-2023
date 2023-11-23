@@ -21,3 +21,21 @@ Direkte link til lambda: [Link](https://gcwivjsicibb7jvi4urcicgnze0rdtrd.lambda-
 ## B. Docker container.
 Funker som den skal, du kan også bruke min bucket:
 docker run -e AWS_ACCESS_KEY_ID=XXX -e AWS_SECRET_ACCESS_KEY=YYY -e BUCKET_NAME=kandidat2006 kjellpy
+
+## Oppgave 2
+## A. Dockerfile
+Kjør med dine aws credentials: 
+ - docker build -t ppe . 
+ - docker run -p 8080:8080 -e AWS_ACCESS_KEY_ID=XXX -e AWS_SECRET_ACCESS_KEY=YYY -e BUCKET_NAME=kjellsimagebucket ppe
+eller min bucket:
+ - docker run -p 8080:8080 -e AWS_ACCESS_KEY_ID=XXX -e AWS_SECRET_ACCESS_KEY=YYY -e BUCKET_NAME=kandidat2006 ppe
+test applikasjon:
+ - curl localhost:8080/scan-ppe?bucketName=kjellsimagebucket
+eller min:
+ - curl localhost:8080/scan-ppe?bucketName=kandidat2006
+
+## B. Actions -> ecr
+Har lagt inn at actions kun kjører hvis du endrer noe i kodebasen den håndterer eller sin egen yml fil for å kutte ned bruken av byggeminutter.
+Har også brukt AWS_LINK i spring_to_ecr. Den kan du legge til selv i secrets: 244530008913.dkr.ecr.eu-west-1.amazonaws.com/kandidat2006-ecr.
+Dette gjorde jeg for at det skulle se ryddigere ut i yml filen.
+

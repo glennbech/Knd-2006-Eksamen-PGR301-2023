@@ -1,2 +1,4 @@
 .aws-sam
 target
+.terraform
+*tfstate*

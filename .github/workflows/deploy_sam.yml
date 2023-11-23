@@ -18,7 +18,9 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
+    - name: Sam build
     - run: sam build --use-container
       working-directory: kjell
-    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name kandidat2006-sam-app --capabilities CAPABILITY_IAM --region eu-west-1
+    - name: Sam deploy
+      run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name kandidat2006-sam-app --capabilities CAPABILITY_IAM --region eu-west-1
       working-directory: kjell

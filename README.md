@@ -7,8 +7,8 @@ For å få github action til å kjøre på din fork må du legge inn
  - AWS_SECRET_ACCESS_KEY
 som secrets.
 Så kan du gjøre en liten endring i koden som å legge inn en kommentar et sted. Deretter:
- - git add <<din fil>> 
- - git commit -m"<<din melding>>"
+ - git add "din fil" 
+ - git commit -m"din melding"
  - git push
 Så kan du gå inn i actions på repositoriet og se at actionen kjører.
 I steget "Run sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name kandidat2006-sam-app --capabilities CAPABILITY_IAM --region eu-west-1"

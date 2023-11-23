@@ -32,6 +32,9 @@ jobs:
           docker push ${{ secrets.AWS_LINK }}:latest
           
   terraformiarius:
+    defaults:
+      run:
+        working-directory: infra
     name: "Terraform"
     needs: push-to-registry
     runs-on: ubuntu-latest

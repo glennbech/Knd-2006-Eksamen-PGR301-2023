@@ -27,10 +27,13 @@ docker run -e AWS_ACCESS_KEY_ID=XXX -e AWS_SECRET_ACCESS_KEY=YYY -e BUCKET_NAME=
 Kjør med dine aws credentials: 
  - docker build -t ppe . 
  - docker run -p 8080:8080 -e AWS_ACCESS_KEY_ID=XXX -e AWS_SECRET_ACCESS_KEY=YYY -e BUCKET_NAME=kjellsimagebucket ppe
+
 eller min bucket:
  - docker run -p 8080:8080 -e AWS_ACCESS_KEY_ID=XXX -e AWS_SECRET_ACCESS_KEY=YYY -e BUCKET_NAME=kandidat2006 ppe
+
 test applikasjon:
  - curl localhost:8080/scan-ppe?bucketName=kjellsimagebucket
+
 eller min:
  - curl localhost:8080/scan-ppe?bucketName=kandidat2006
 

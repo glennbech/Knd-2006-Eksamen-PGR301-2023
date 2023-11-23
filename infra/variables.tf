@@ -22,7 +22,7 @@ variable role_name {
 }
 
 variable port {
-    description = "Hvilken port du vil appen skal kjøre på"
+    description = "Hvilken port du vil appen skal kjoere på"
     type = number
     default = 8080
 }

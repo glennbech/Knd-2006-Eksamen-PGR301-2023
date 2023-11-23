@@ -22,4 +22,5 @@ jobs:
           rev=$(git rev-parse --short HEAD)
           docker build . -t ppe
           docker tag ppe ${{ secrets.AWS_LINK }}:$rev
+          docker tag ppe ${{ secrets.AWS_LINK }}:latest
           docker push ${{ secrets.AWS_LINK }}:$rev

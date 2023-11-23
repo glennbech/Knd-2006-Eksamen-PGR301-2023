@@ -16,12 +16,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
-      - name: Login to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Build, tag, and push Docker image
         run: |
+          aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_LINK }}
           rev=$(git rev-parse --short HEAD)
           docker build . -t ppe
-          docker tag ppe ${{ secrets.AWS_LINK }}/kand2006:$rev
-          docker push ${{ secrets.AWS_LINK }}/kand2006:$rev
+          docker tag ppe ${{ secrets.AWS_LINK }}:$rev
+          docker push ${{ secrets.AWS_LINK }}:$rev

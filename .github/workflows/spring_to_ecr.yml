@@ -24,3 +24,4 @@ jobs:
           docker tag ppe ${{ secrets.AWS_LINK }}:$rev
           docker tag ppe ${{ secrets.AWS_LINK }}:latest
           docker push ${{ secrets.AWS_LINK }}:$rev
+          docker push ${{ secrets.AWS_LINK }}:latest

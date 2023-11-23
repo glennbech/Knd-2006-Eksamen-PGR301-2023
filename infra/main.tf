@@ -39,6 +39,39 @@ resource "aws_iam_role_policy_attachment" "attachment" {
   policy_arn = aws_iam_policy.policy.arn
 }
 
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["tasks.apprunner.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+data "aws_iam_policy_document" "policy" {
+  statement {
+    effect    = "Allow"
+    actions   = ["rekognition:*"]
+    resources = ["*"]
+  }
+  
+  statement  {
+    effect    = "Allow"
+    actions   = ["s3:*"]
+    resources = ["*"]
+  }
+
+  statement  {
+    effect    = "Allow"
+    actions   = ["cloudwatch:*"]
+    resources = ["*"]
+  }
+}
+
 
 
 

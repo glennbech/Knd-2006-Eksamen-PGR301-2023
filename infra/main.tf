@@ -22,6 +22,24 @@ resource "aws_apprunner_service" "service" {
   }
 }
 
+resource "aws_iam_role" "role_for_apprunner_service" {
+  name = var.role_name
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_policy" "policy" {
+  name = var.policy_name
+  description = "Policy for apprunner instance"
+  policy      = data.aws_iam_policy_document.policy.json
+}
+
+
+resource "aws_iam_role_policy_attachment" "attachment" {
+  role       = aws_iam_role.role_for_apprunner_service.name
+  policy_arn = aws_iam_policy.policy.arn
+}
+
+
 
 
 

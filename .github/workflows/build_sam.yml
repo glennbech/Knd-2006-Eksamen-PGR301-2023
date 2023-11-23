@@ -1,4 +1,4 @@
-name: Build sam when not on main
+name: Build sam when not main
 on:
  push:
   paths:

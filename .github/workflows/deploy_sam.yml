@@ -1,3 +1,4 @@
+name: Build and deploy sam when on main
 on:
  push:
   branches: 

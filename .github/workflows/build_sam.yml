@@ -1,3 +1,4 @@
+name: Build sam when not on main
 on:
   push:
     branches-ignore:

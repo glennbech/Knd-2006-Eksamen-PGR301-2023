@@ -42,24 +42,18 @@ jobs:
     IMAGE: ${{ AWS_LINK }}:latest
     
     steps:
-      
       - uses: actions/checkout@v3
-      
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-      
       - name: Terraform Init
         id: init
         run: terraform init
-      
       - name: Terraform Plan
         id: plan
         run: terraform plan -var="image_identifier=$IMAGE" -no-color
         continue-on-error: true
-        
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-        
       - name: Terraform Apply
         run: terraform apply -var="image_identifier=$IMAGE" -auto-approve

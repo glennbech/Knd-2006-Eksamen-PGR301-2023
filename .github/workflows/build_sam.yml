@@ -1,11 +1,11 @@
 name: Build sam when not on main
 on:
-  push:
-    paths:
-     - kjell/
-     - .github/workflows/build_sam.yml
-    branches-ignore:
-      - main
+ push:
+  paths:
+    - kjell/
+    - .github/workflows/build_sam.yml
+  branches-ignore:
+    - main
 jobs:
  build:
   runs-on: ubuntu-latest

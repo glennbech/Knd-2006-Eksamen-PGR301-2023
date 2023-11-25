@@ -96,6 +96,19 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
                 .anyMatch(bodyPart -> bodyPart.getName().equals("FACE")
                         && bodyPart.getEquipmentDetections().isEmpty());
     }
+    
+    @GetMapping(value = "/famous-peeps", consumes = "*/*", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<List<S3ObjectSummary>> checkFamousPeople(@RequestParam String bucketName){
+        ListObjectsV2Result imageList = s3Client.listObjectsV2(bucketName);
+        
+        if(!imageList.isTruncated()){
+            return ResponseEntity.ok(imageList.getObjectSummaries());
+        }
+        return null;
+        
+        
+    }
 
 
     @Override

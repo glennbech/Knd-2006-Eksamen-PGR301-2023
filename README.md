@@ -23,6 +23,7 @@ Direkte link til lambda: [Link](https://gcwivjsicibb7jvi4urcicgnze0rdtrd.lambda-
 
 ## B. Docker container.
 Funker som den skal, du kan også bruke min bucket:
+
 docker run -e AWS_ACCESS_KEY_ID=XXX -e AWS_SECRET_ACCESS_KEY=YYY -e BUCKET_NAME=kandidat2006 kjellpy
 
 ## Oppgave 2

@@ -41,7 +41,7 @@ eller min:
  - curl localhost:8080/scan-ppe?bucketName=kandidat2006
 
 ## B. Actions -> ecr
-![screenshot av ecr images hvor den nyeste har tagen "latest"](/eksamen_2023-main/img/ecr_screenshot.png)
+![screenshot av ecr images hvor den nyeste har tagen "latest"](/img/ecr_screenshot.png)
 
 ## Oppgave 3
 ## A. 

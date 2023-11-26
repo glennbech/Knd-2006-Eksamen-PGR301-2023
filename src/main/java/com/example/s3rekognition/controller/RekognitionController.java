@@ -121,9 +121,9 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
     @GetMapping(value = "/famous-peeps", consumes = "*/*", produces = "application/json")
     @ResponseBody
     public ResponseEntity<List<MyImage>> checkFamousPeople(@RequestParam String bucketName){
-        
-        //All images
         imageList = s3Client.listObjectsV2(bucketName);
+        //All images
+        logger.info(""+imageList.getKeyCount());
         
         //Only images with name containing "famous"
         List<S3ObjectSummary> famousPeopleList = new ArrayList<>();

@@ -90,10 +90,11 @@ resource "aws_cloudwatch_dashboard" "main" {
             "image_count.value"
           ]
         ],
-        "period": 300,
+        "view": "gauge",
         "stat": "Maximum",
         "region": "eu-west-1",
         "title": "Number of images in bucket"
+        
       }
     }
   ]

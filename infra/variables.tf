@@ -32,3 +32,9 @@ variable port {
     type = number
     default = 8080
 }
+
+variable dashboard_name {
+    description = "Navnet på dashboardet i cloudwatch"
+    type = string
+    default = "dashboard"
+}

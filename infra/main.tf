@@ -1,5 +1,5 @@
 resource "aws_apprunner_service" "service" {
-  service_name = var.candidate_name + "-" + var.service_name
+  service_name = locals.service_name
 
   instance_configuration {
     instance_role_arn = aws_iam_role.role_for_apprunner_service.arn
@@ -23,12 +23,12 @@ resource "aws_apprunner_service" "service" {
 }
 
 resource "aws_iam_role" "role_for_apprunner_service" {
-  name = var.candidate_name + "-" + var.role_name
+  name = locals.role_name
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_iam_policy" "policy" {
-  name = var.candidate_name + "-" + var.policy_name
+  name = locals.policy_name
   description = "Policy for apprunner instance"
   policy      = data.aws_iam_policy_document.policy.json
 }
@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "policy" {
 }
 
 resource "aws_cloudwatch_dashboard" "main" {
-  dashboard_name = var.candidate_name
+  dashboard_name = locals.candidate_name
   dashboard_body = <<DASHBOARD
 {
   "widgets": [

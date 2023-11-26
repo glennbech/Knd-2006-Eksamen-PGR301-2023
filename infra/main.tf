@@ -99,7 +99,17 @@ resource "aws_cloudwatch_dashboard" "main" {
   ]
 }
 DASHBOARD
+
+locals {
+    service_name = var.candidate_name + "-" + var.service_name
+    policy_name = var.candidate_name + "-" + var.policy_name
+    role_name = var.candidate_name + "-" + var.role_name
+    dashboard_name = var.candidate_name + "-" + var.dashboard_name
 }
+
+}
+
+
 
 
 

@@ -73,14 +73,12 @@ data "aws_iam_policy_document" "policy" {
 }
 
 resource "aws_cloudwatch_dashboard" "main" {
-  dashboard_name = format("%s-%s",var.candidate_name, var.dashboard_name)
+  dashboard_name = format("%s-%s", var.candidate_name, var.dashboard_name)
   dashboard_body = <<DASHBOARD
 {
   "widgets": [
     {
       "type": "metric",
-      "x": 0,
-      "y": 0,
       "width": 12,
       "height": 6,
       "properties": {
@@ -88,19 +86,76 @@ resource "aws_cloudwatch_dashboard" "main" {
           [
             "${var.candidate_name}",
             "image_count.value"
+          ],
+          [
+            "${var.candidate_name}",
+            "famousPeopleInBucket.value"
+          ],
+          [
+            "${var.candidate_name}",
+            "imagesWithFamousInKey.value"
           ]
         ],
         "view": "gauge",
-        "stat": "Maximum",
         "region": "eu-west-1",
-        "title": "Number of images in bucket"
-        
+        "title": "Bucket stats",
+        "stat": "Maximum",
+        "yAxis": {
+          "left": {
+            "min": 0, 
+            "max": 100
+          }        
+        } 
       }
-    }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "kandidat2006", "famous.timed.max", "exception", "none", "method", "checkFamousPeople", "class", "com.example.s3rekognition.controller.RekognitionController", { "region": "eu-west-1", "label": "famous max" } ],
+          [ ".", "famous.timed.avg", ".", ".", ".", ".", ".", ".", { "region": "eu-west-1", "label": "famous avg" } ],
+          [ ".", "ppe.timed.avg", ".", ".", ".", "scanForPPE", ".", ".", { "region": "eu-west-1", "label": "ppe avg" } ],
+          [ ".", "ppe.timed.max", ".", ".", ".", ".", ".", ".", { "region": "eu-west-1", "label": "ppe max" } ]
+        ],
+        "view": "timeSeries",
+        "region": "eu-west-1",
+        "title": "Avg time of endpoints to finish",
+        "stat": "Average",
+        "yAxis": {
+          "left": {
+            "label": "Milliseconds",
+            "showUnits": false
+          }       
+        }
+      }
+    },
+      {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ { "expression": "SEARCH('MetricName=\"famous.person.count\" ', 'Maximum')", "label": "", "id": "e1", "region": "eu-west-1" } ]
+        ],
+        "view": "bar",
+        "region": "eu-west-1",
+        "title": "Number of times a celebrity har been recognized",
+        "stat": "Maximum"
+        } 
+      }
+      
   ]
 }
 DASHBOARD
+}
 
+
+module "alarm" {
+  source = "./alarm_module"
+  alarm_email = var.alarm_email
+  prefix = var.candidate_name
 }
 
 

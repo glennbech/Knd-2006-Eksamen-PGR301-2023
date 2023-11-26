@@ -2,6 +2,7 @@ package com.example.s3rekognition.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,9 @@ import com.example.s3rekognition.MyImage;
 import com.example.s3rekognition.PPEClassificationResponse;
 import com.example.s3rekognition.PPEResponse;
 
+import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
-
 
 @RestController
 public class RekognitionController implements ApplicationListener<ApplicationReadyEvent> {
@@ -43,6 +44,9 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
     private final AmazonRekognition rekognitionClient;
     private MeterRegistry meterRegistry;
     ListObjectsV2Result imageList;
+    private AtomicInteger currentImageCount = new AtomicInteger(0);
+    private AtomicInteger totalFamousPeopleCount = new AtomicInteger(0);
+    private AtomicInteger imagesToTestForFamous = new AtomicInteger(0);
 
     private static final Logger logger = Logger.getLogger(RekognitionController.class.getName());
 
@@ -61,11 +65,13 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
      * @param bucketName
      * @return
      */
+    @Timed("ppe.timed")
     @GetMapping(value = "/scan-ppe", consumes = "*/*", produces = "application/json")
     @ResponseBody
     public ResponseEntity<PPEResponse> scanForPPE(@RequestParam String bucketName) {
         // List all objects in the S3 bucket
         imageList = s3Client.listObjectsV2(bucketName);
+        
 
         // This will hold all of our classifications
         List<PPEClassificationResponse> classificationResponses = new ArrayList<>();
@@ -117,26 +123,36 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
                 .anyMatch(bodyPart -> bodyPart.getName().equals("FACE")
                         && bodyPart.getEquipmentDetections().isEmpty());
     }
-    
+    @Timed("famous.timed")
     @GetMapping(value = "/famous-peeps", consumes = "*/*", produces = "application/json")
     @ResponseBody
     public ResponseEntity<List<MyImage>> checkFamousPeople(@RequestParam String bucketName){
-        imageList = s3Client.listObjectsV2(bucketName);
+        
         //All images
-        logger.info(""+imageList.getKeyCount());
+        imageList = s3Client.listObjectsV2(bucketName);
+        
+        currentImageCount.set(imageList.getKeyCount());
+        
+        logger.info("images in bucket: " + currentImageCount);
         
         //Only images with name containing "famous"
         List<S3ObjectSummary> famousPeopleList = new ArrayList<>();
         
+        int imagesWithFamousInKeyCount = 0;
         //Adding the famous images
         for (S3ObjectSummary image : imageList.getObjectSummaries()) {
             if(image.getKey().contains("famous")){
                 famousPeopleList.add(image);
+                imagesWithFamousInKeyCount++;
             }
         }
         
+        imagesToTestForFamous.set(imagesWithFamousInKeyCount);
+        
+        
         List<MyImage> images = new ArrayList<>();
         
+        int famousPeopleCount = 0;
         for (S3ObjectSummary image : famousPeopleList) {
             RecognizeCelebritiesRequest request = new RecognizeCelebritiesRequest()
                 .withImage(new Image()
@@ -151,12 +167,21 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
             for (Celebrity celebrity : result.getCelebrityFaces()) {
                 FamousPerson famousPerson = new FamousPerson(celebrity.getName(), celebrity.getUrls());
                 famousPersons.add(famousPerson);
+                
+                //Incrementing famous.person + celebrity name
+                meterRegistry.counter("famous.person", "celebrity.name", celebrity.getName()).increment();
             }
 
             MyImage famousPersonImage = new MyImage(image.getKey(), result.getCelebrityFaces().size(), famousPersons);
             
             images.add(famousPersonImage);
+            famousPeopleCount += result.getCelebrityFaces().size();
         }
+        
+        totalFamousPeopleCount.set(famousPeopleCount);
+        
+        
+        
         
         return ResponseEntity.ok(images);
         
@@ -167,7 +192,9 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
     
 
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
-        Gauge.builder("image_count", imageList, iL -> iL.getKeyCount()).register(meterRegistry);
+        public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
+            Gauge.builder("image_count", currentImageCount, AtomicInteger::get).register(meterRegistry);
+            Gauge.builder("famousPeopleInBucket", totalFamousPeopleCount, AtomicInteger::get).register(meterRegistry);
+            Gauge.builder("imagesWithFamousInKey", imagesToTestForFamous, AtomicInteger::get).register(meterRegistry);
     }
 }

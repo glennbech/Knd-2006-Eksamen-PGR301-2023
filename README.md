@@ -58,3 +58,28 @@ For å få action til å kjøre hos deg må du ha AWS_ACCESS_KEY_ID og AWS_SECRE
  - git push
  
 Så vil du se at den kjører i actions taben.
+
+## Oppgave 4
+## A.
+Jeg har valgt timer, meter og gauge som mine metrics. Gaugene er for å se forskjellig data om bucketen min og bildene som ligger der.
+
+Timer er for å se hvor mye tid i gjennomsnitt mine endpoints bruker fra start til slutt.
+
+Meter er for å se hvilke personer og hvor mange ganger de har blitt gjennkjent. Den lager dynamisk en ny bar for hver kjendis som rekognition finner. 
+
+Dette kan du prøve hvis du vil ved å laste opp et png eller jpg bildet til bøtten "kandidat2006" som er av en kjendis. For så å kalle på endepunktet.
+
+Jeg synes disse tre metrikkene gir en god oversikt over hva appen holder på med.
+
+Timerene viser teknisk data, gaugen og meterene viser derimote data viktig for bedriften min.
+
+## B.
+Alarmen funker som den skal, fått mail. Endret thresholdet etter første alarm, så jeg ikke skulle fortsette å få mail.
+[Skjermbilde av alarm mailen](/img/alarm.png)
+
+Alle verdiene er mulig å tilpasse når du bruker modulen, men den har fornuftige defaultverdier på alt som ikke er nødvendig å endre.
+
+Jeg valgte å ha alarm på antall bilder i bøtta fordi jeg ser at ppe bruker lang tid, og da kan det være greit å kutte ned på bilder når det når et visst punkt.
+Kunne like gjerne ha hatt alarm på tiden ppe funksjonen bruker, men valgte antall bilder.
+
+##Oppgave 5 (som du har nummerert 4 :P)

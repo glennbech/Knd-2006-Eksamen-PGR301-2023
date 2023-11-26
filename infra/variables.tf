@@ -7,13 +7,13 @@ variable candidate_name {
 variable service_name {
     description = "Navnet på servicen, endre dette hvis du vil :>"
     type = string
-    default = var.candidate_name + "-apprunner"
+    default = "apprunner"
 }
 
 variable policy_name {
     description = "Navnet på policyen du lager"
     type = string
-    default = var.candidate_name + "-apprunner-policy"
+    default = "apprunner-policy"
 }
 
 variable image_identifier {
@@ -24,7 +24,7 @@ variable image_identifier {
 variable role_name {
     description = "Navnet på rollen som oprettes"
     type = string
-    default = var.candidate_name + "-apprunner-rolle"
+    default = "apprunner-rolle"
 }
 
 variable port {

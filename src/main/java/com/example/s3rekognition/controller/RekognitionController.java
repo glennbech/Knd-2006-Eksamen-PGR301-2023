@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,12 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.example.s3rekognition.FamousPerson;
+import com.example.s3rekognition.MyImage;
 import com.example.s3rekognition.PPEClassificationResponse;
 import com.example.s3rekognition.PPEResponse;
-import com.example.s3rekognition.MyImage;
+
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 
 
 @RestController
@@ -37,12 +41,16 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
 
     private final AmazonS3 s3Client;
     private final AmazonRekognition rekognitionClient;
+    private MeterRegistry meterRegistry;
+    ListObjectsV2Result imageList;
 
     private static final Logger logger = Logger.getLogger(RekognitionController.class.getName());
 
-    public RekognitionController() {
+    @Autowired
+    public RekognitionController(MeterRegistry meterRegistry) {
         this.s3Client = AmazonS3ClientBuilder.standard().build();
         this.rekognitionClient = AmazonRekognitionClientBuilder.standard().build();
+        this.meterRegistry = meterRegistry;
     }
 
     /**
@@ -57,7 +65,7 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
     @ResponseBody
     public ResponseEntity<PPEResponse> scanForPPE(@RequestParam String bucketName) {
         // List all objects in the S3 bucket
-        ListObjectsV2Result imageList = s3Client.listObjectsV2(bucketName);
+        imageList = s3Client.listObjectsV2(bucketName);
 
         // This will hold all of our classifications
         List<PPEClassificationResponse> classificationResponses = new ArrayList<>();
@@ -115,7 +123,7 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
     public ResponseEntity<List<MyImage>> checkFamousPeople(@RequestParam String bucketName){
         
         //All images
-        ListObjectsV2Result imageList = s3Client.listObjectsV2(bucketName);
+        imageList = s3Client.listObjectsV2(bucketName);
         
         //Only images with name containing "famous"
         List<S3ObjectSummary> famousPeopleList = new ArrayList<>();
@@ -155,10 +163,11 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
         
         
     }
-
+    
+    
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
-
+        Gauge.builder("image_count", imageList, iL -> iL.getKeyCount()).register(meterRegistry);
     }
 }

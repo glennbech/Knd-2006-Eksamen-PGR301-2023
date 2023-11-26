@@ -1,22 +1,35 @@
 package com.example.s3rekognition.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
-import com.amazonaws.services.rekognition.model.*;
+import com.amazonaws.services.rekognition.model.Celebrity;
+import com.amazonaws.services.rekognition.model.DetectProtectiveEquipmentRequest;
+import com.amazonaws.services.rekognition.model.DetectProtectiveEquipmentResult;
+import com.amazonaws.services.rekognition.model.Image;
+import com.amazonaws.services.rekognition.model.ProtectiveEquipmentSummarizationAttributes;
+import com.amazonaws.services.rekognition.model.RecognizeCelebritiesRequest;
+import com.amazonaws.services.rekognition.model.RecognizeCelebritiesResult;
+import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.example.s3rekognition.FamousPerson;
 import com.example.s3rekognition.PPEClassificationResponse;
 import com.example.s3rekognition.PPEResponse;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.ApplicationListener;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+import com.example.s3rekognition.MyImage;
 
 
 @RestController
@@ -99,13 +112,46 @@ public class RekognitionController implements ApplicationListener<ApplicationRea
     
     @GetMapping(value = "/famous-peeps", consumes = "*/*", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<List<S3ObjectSummary>> checkFamousPeople(@RequestParam String bucketName){
+    public ResponseEntity<List<MyImage>> checkFamousPeople(@RequestParam String bucketName){
+        
+        //All images
         ListObjectsV2Result imageList = s3Client.listObjectsV2(bucketName);
         
-        if(!imageList.isTruncated()){
-            return ResponseEntity.ok(imageList.getObjectSummaries());
+        //Only images with name containing "famous"
+        List<S3ObjectSummary> famousPeopleList = new ArrayList<>();
+        
+        //Adding the famous images
+        for (S3ObjectSummary image : imageList.getObjectSummaries()) {
+            if(image.getKey().contains("famous")){
+                famousPeopleList.add(image);
+            }
         }
-        return null;
+        
+        List<MyImage> images = new ArrayList<>();
+        
+        for (S3ObjectSummary image : famousPeopleList) {
+            RecognizeCelebritiesRequest request = new RecognizeCelebritiesRequest()
+                .withImage(new Image()
+                    .withS3Object(new S3Object()
+                    .withBucket(bucketName)
+                    .withName(image.getKey())));    
+                    
+            RecognizeCelebritiesResult result = rekognitionClient.recognizeCelebrities(request);
+            
+            List<FamousPerson> famousPersons = new ArrayList<>();
+            
+            for (Celebrity celebrity : result.getCelebrityFaces()) {
+                FamousPerson famousPerson = new FamousPerson(celebrity.getName(), celebrity.getUrls());
+                famousPersons.add(famousPerson);
+            }
+
+            MyImage famousPersonImage = new MyImage(image.getKey(), result.getCelebrityFaces().size(), famousPersons);
+            
+            images.add(famousPersonImage);
+        }
+        
+        return ResponseEntity.ok(images);
+        
         
         
     }

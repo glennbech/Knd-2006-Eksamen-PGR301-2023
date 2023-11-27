@@ -6,7 +6,7 @@ For å få github action til å kjøre på din fork må du legge inn
  - AWS_ACCESS_KEY_ID
  - AWS_SECRET_ACCESS_KEY
 
-som secrets. Det finner du her: github.com/"DITT BRUKERNAVN"/"DITT REPO"/settings/secrets/actions
+som secrets. Det finner du her: github.<span>com/"DITT BRUKERNAVN"/"DITT REPO"/settings/secrets/actions
 Du trenger også brukernavn og en github token når du skal pushe til forken din. Det finner du [her](https://github.com/settings/tokens/new)
 Så kan du gjøre en liten endring i koden som å legge inn en kommentar et sted. Deretter:
  - git add "din fil" 

@@ -1,10 +1,10 @@
 name: Publish image to ecr
 on:
   push:
-    #paths:
-    #  - src/
-    #  - .github/workflows/spring_to_ecr.yml
-    #  - infra/
+    paths:
+      - src/
+      - .github/workflows/spring_to_ecr.yml
+      - infra/
     branches: 
       - main
 jobs:

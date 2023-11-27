@@ -114,13 +114,66 @@ Det kan også være lurt å ha dokumentasjon av de forskjellige CI prosessene i 
 1. Metodikken i Scrum
 - Jobber i sprinter på mellom 1 og 4 uker.
 - Planlegger først, deretter koder, så review.
+- Fokus på iterative utvikling.
 - Har et forhåndsbestemt antall features man vil få gjort i sprinten, aldri mer, men noen ganger mindre. Da legges de i backloggen til neste sprint.
 - Som det står i Scrum guiden: ["No changes are made that would endanger the Sprint Goal"](https://scrumguides.org/scrum-guide.html)
 - Ser hele tiden fremover til neste feature, lite tid til forbedring, med mindre det er fokuset for sprinten.
+- Fokuserer for det meste på utviklingsdelen av programmets livssyklus. 
+- Kan være mer nyttig hvis kravene fra kunden ofte endres.
 
 Med denne metodikken vil man ikke ha like stor mulighet til kontinuerlig forbedring, siden man da kanskje kun vil integrere featurene i slutten av sprinten. Hvis den får grøt lys integreres den og man er ferdig med den.
 
 Det er daglige møter (daily standups) som kan ta mye tid, hvis scrum masteren ikke er effektiv.
 
-En av fordelene til scri,
+Hvis det er et stort prosjekt med flere scrum teams, krever det god kommunikasjon mellom dem.
+
+Når man skal i gang med en sprint krever det at utviklerne er gode til å estimere hvor lang tid ting tar for at man skal komme i mål med sprint målet.
+
+2. Metodikken i DevOps
+- Fokuserer på integrasjon og leveranse av koden samt overvåkning av kode i produksjon.
+- Tre hovedrprinsipper:
+    - flyt - automatisere pipelinen din
+    - feedback - rask tilbakemelding på om den funker som den skal eller om det har oppstått et problem
+    - kontinuerlig forbedring - se den overnevnte feedbacken og fikse problemer.
+- Man gjør små endringer hele tiden, hvis det oppstår feil er det en del av læringen. 
+- Oppfordrer til ekperimenteringer siden man inkrementerer koden i små biter er det lett å hoppe tilbake til et tidligere punkt i koden.
+- Mest effektiv ved veldig konkrete mål.
+
+Siden man har satt opp pipelinen sin til å gi deg feedback hvis noe feiler, gir dette et solid grunnlag for et godt produkt.
+Det er essensielt at man da har satt opp alt dette rundt, gode tester, gode actions på for eksempel github, gode varsler.
+Siden DevOps oppfordrer til hyppige deployments vil dette øke leveransetempoet.
+På grunn av de hyppige deploymentsene kan det hende man noen ganger nedprioriterer sikkerhet. I dagens teknologiske samfunn er det en stor ulempe.
+
+3. Sammenligning
+Jeg tenker man ikke kan sammenligne disse to metodikkene 1 til 1. Etter slik jeg har forstått det prøver de ikke å løse de samme problemene.
+Scrum er en utviklingsprosess og sier ingen ting om det som skjer etter du har levert koden eller feedback, utenom i retrospektive, men det handler mer om prosessen enn feedback til koden.
+DevOps derimot sier ingenting om gruppestrukturer, ledere, produkteiere og heller ingenting om tidsrammer utenom at ting skal skje daglig.
+Siden sprinter i scrum kan vare alt fra en til fire uker, vil du kunne raskere levere et produkt med DevOps.
+Jeg ser ingenting i veien for at man skal kunne implementere konsepter fra devops inn i en sprint. Ved at du har automatiserte pipelines som gir deg feedback som du da forbedrer.
+Jeg vil ikke si man må velge en, men at de komplimenterer hverandre mer enn at de er motsetninger.
+
+## C.
+I dette tenkte scenarioet har jeg laget en tinder-feature for linkedIn hvor en bruker kan stille inn om de er arbeidstakere eller arbeidssøkere.
+Deretter er det bare å swipe i vei, arbeidssøkere vil få opp stillinger som matcher deres profil, og arbeidstakere vil få opp søkere som matcher deres stilling.
+ 1. Sette opp tester i koden min.
+ 2. Lage github action som builder og tester på min branch (ikke main). Dette er første instans av feedback.
+ 3. Micrometer til å sette inn målepunkter i koden som måler diverse metrics. Et par eksempler:
+    - Antall brukere inne på tjenesten.
+    - Antall swipes til høyre siste 5 min
+    - Antall swipes til venstre siste 5 min
+ 4. Deretter kan jeg bruke terraform til å lage et dashboard som viser disse metrikkene. I for eksemepl cloudwatch.
+ 5. Her kan jeg se hvordan det går med featuren min og kan sette opp alarmer med cloudwatch som bruker SNS til å sende meg mail, hvis det siste timen ikke har vært noen brukere for eksempel.
+ 5. Jeg setter også opp alarmer som aktiveres når jeg får x antall 500 feilmeldinger fra endepunktene.
+ 6. Dette kan signalisere at det er noe galt.
+
+Hvis man har laget noe så kan man fort bli blind på eget arbeid. Feedback er derfor essensielt.
+Man har mange former for feedback
+ - in person feedback, hvis man par programmerer kan det komme øyeblikkelig.
+ - har man tester kan det komme etter man kjører dem.
+ - har man github actions får man mail før det kommer ut i produksjon hvis den feiler.
+ - har man alarmer og metrikker får man feedback i produksjon.
+Alle disse formene for feedback gjør det lettere å lage gode produkter.
+
+Mellom hvert steg er det nye forbedringer, og så en pil opp. Blir det godkjent der går man videre til neste steg.
+Dette øker kodekvaliteten, ved å hele tiden gjøre små endringer og få tilbakemelding på disse endringene.
  

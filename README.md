@@ -75,7 +75,7 @@ Timerene viser teknisk data, gaugen og meterene viser derimote data viktig for b
 
 ## B.
 Alarmen funker som den skal, fått mail. Endret thresholdet etter første alarm, så jeg ikke skulle fortsette å få mail.
-[Skjermbilde av alarm mailen](/img/alarm.png)
+![Skjermbilde av alarm mailen](/img/alarm.png)
 
 Alle verdiene er mulig å tilpasse når du bruker modulen, men den har fornuftige defaultverdier på alt som ikke er nødvendig å endre.
 

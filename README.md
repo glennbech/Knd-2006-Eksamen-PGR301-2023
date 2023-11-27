@@ -82,4 +82,45 @@ Alle verdiene er mulig å tilpasse når du bruker modulen, men den har fornuftig
 Jeg valgte å ha alarm på antall bilder i bøtta fordi jeg ser at ppe bruker lang tid, og da kan det være greit å kutte ned på bilder når det når et visst punkt.
 Kunne like gjerne ha hatt alarm på tiden ppe funksjonen bruker, men valgte antall bilder.
 
-##Oppgave 5 (som du har nummerert 4 :P)
+##Oppgave 5 
+## A.
+Kontinuerlig integrasjon er praksisen innen DevOps hvor jeg som utvikler regelmessig laster opp kode til et sentralt sted. (for eksempel github).
+
+Her bygges koden og tester blir kjørt.
+
+De viktigste målene med kontinuerlig integrasjon er å finne og håndtere feil raskere, forbedre programvarekvaliteten, og redusere tiden det tar å validere og slippe nye programvareoppdateringer.
+
+Fordelene med kontinuerlig integrasjon altså å ofte validere at det fungerer som det skal er at du finner og håndterer feil raskere. Dermed vil du få en bedre kvalitet på programmet ditt og resudere tiden det tar mellom hver oppdatering.
+
+Det finnes flere tilnærminger til hvordan man jobber i teams når det gjelder CI. Hvis man er et lite team som i dette tilfellet, kan man jobbe på samme repository.
+
+En del viktige ting man må være obs på:
+ - Sette opp branch protection, spesielt på main, men kan også være greit å beskytte de branchene branchene med satte regler. Slik at kun de endringene som man vil ha med kommer seg til main, som ofte er ditt endelig produkt.
+ - Skal du lage en ny feature lager du en branch til denne.
+
+Når man har skrevet sin feature ferdig så kan man lage en pull request til main hvor de andre i teamet kan se over, requeste endringer og godkjenne.
+
+Her kan man også sette opp regler for hvor mange som trenger å godkjenne.
+ - Sette opp github actions som bygger og tester koden.
+ - Hvis man skal deploye koden så kun deploye main. Dette gjøres også med actions.
+ - Du kan også lage actions som tester at koden som blir merget til main via en pullrequest får grønt lys på tester.
+ - Sette opp varslinger. GitHub har som standard at når en action feiler får du mail, men du kan også utvide disse varslene til å scanne repoet for ting som ikke skal være med for eksempel aws keys.
+ - Dokumentasjon av koden er viktig når man jobber alene, men et must når man jobber i teams.
+
+Det kan også være lurt å ha dokumentasjon av de forskjellige CI prosessene i et dokument.
+
+## B.
+
+1. Metodikken i Scrum
+- Jobber i sprinter på mellom 1 og 4 uker.
+- Planlegger først, deretter koder, så review.
+- Har et forhåndsbestemt antall features man vil få gjort i sprinten, aldri mer, men noen ganger mindre. Da legges de i backloggen til neste sprint.
+- Som det står i Scrum guiden: ["No changes are made that would endanger the Sprint Goal"](https://scrumguides.org/scrum-guide.html)
+- Ser hele tiden fremover til neste feature, lite tid til forbedring, med mindre det er fokuset for sprinten.
+
+Med denne metodikken vil man ikke ha like stor mulighet til kontinuerlig forbedring, siden man da kanskje kun vil integrere featurene i slutten av sprinten. Hvis den får grøt lys integreres den og man er ferdig med den.
+
+Det er daglige møter (daily standups) som kan ta mye tid, hvis scrum masteren ikke er effektiv.
+
+En av fordelene til scri,
+ 

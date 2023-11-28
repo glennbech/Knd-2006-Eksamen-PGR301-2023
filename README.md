@@ -89,7 +89,7 @@ Alle verdiene er mulig å tilpasse når du bruker modulen, men den har fornuftig
 Jeg valgte å ha alarm på antall bilder i bøtta fordi jeg ser at ppe bruker lang tid, og da kan det være greit å kutte ned på bilder når det når et visst punkt.
 Kunne like gjerne ha hatt alarm på tiden ppe funksjonen bruker, men valgte antall bilder.
 
-##Oppgave 5 
+## Oppgave 5 
 ## A.
 Kontinuerlig integrasjon er praksisen innen DevOps hvor jeg som utvikler regelmessig laster opp kode til et sentralt sted. (for eksempel github).
 

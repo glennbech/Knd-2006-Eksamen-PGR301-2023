@@ -2,7 +2,7 @@
 
 ## Oppgave 1
 ## A. SAM & GitHub actions workflow
-For å få github action til å kjøre på din fork må du legge inn
+For å få github action til å kjøre på din fork må du legge inn, det finner du på din bruker på IAM inne i aws.
  - AWS_ACCESS_KEY_ID
  - AWS_SECRET_ACCESS_KEY
 

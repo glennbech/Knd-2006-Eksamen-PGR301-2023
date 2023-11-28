@@ -1,5 +1,11 @@
 # Knd-2006-Eksamen-PGR301-2023
 
+Note: Det er en del failed builds på slutten grunnet apprunner tull, men den har vært oppe og kjørt på apprunner tidligere og har ikke endret noe i koden som gjør at den plutselig skal feile.
+ 
+Du vil se at det lokale imaget kjører uten problemer.
+
+Note2: Siden kjell og java-koden egentlig er to forskjellige prosjekter har jeg satt opp i action fila at jobbene kun kjører hvis kode som omhandler dem blir endret.
+
 ## Oppgave 1
 ## A. SAM & GitHub actions workflow
 For å få github action til å kjøre på din fork må du legge inn, det finner du på din bruker på IAM inne i aws.

@@ -1,26 +1,26 @@
 name: Build and deploy sam when on main
 on:
- push:
-  paths:
-   - kjell/
-   - .github/workflows/deploy_sam.yml
-  branches: 
-   - main
+  push:
+    paths:
+      - kjell/
+      - .github/workflows/deploy_sam.yml
+    branches:
+      - main
 jobs:
- build-deploy:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-    - uses: aws-actions/setup-sam@v1
-    - uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-west-1
-    - name: Sam build
-      run: sam build --use-container
-      working-directory: kjell
-    - name: Sam deploy
-      run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name kandidat2006-sam-app --capabilities CAPABILITY_IAM --region eu-west-1
-      working-directory: kjell
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - uses: aws-actions/setup-sam@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - name: Sam build
+        run: sam build --use-container
+        working-directory: kjell
+      - name: Sam deploy
+        run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name kandidat2006-sam-app --capabilities CAPABILITY_IAM --region eu-west-1
+        working-directory: kjell

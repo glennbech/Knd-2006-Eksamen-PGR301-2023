@@ -4,7 +4,7 @@ on:
     paths:
       - src/
       - .github/workflows/spring_to_ecr.yml
-      - infra/
+      - infra/**
     branches: 
       - main
 jobs:

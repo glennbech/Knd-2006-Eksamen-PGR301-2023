@@ -2,7 +2,7 @@ name: Build and deploy sam when on main
 on:
   push:
     paths:
-      - kjell/
+      - kjell/template.yaml
       - .github/workflows/deploy_sam.yml
     branches:
       - main
